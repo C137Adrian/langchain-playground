@@ -18,7 +18,7 @@ This repository provides a clean, modular, and extensible environment for buildi
 ### Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/langchain-playground.git
+git clone https://github.com/C137Adrian/langchain-playground.git
 cd langchain-playground
 ```
 
