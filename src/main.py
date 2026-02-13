@@ -1,13 +1,19 @@
-from langchain_groq import ChatGroq
-from dotenv import load_dotenv
+from chains.explain_and_summarize import build_explain_and_summarize_chain
 
-load_dotenv()
 
 def main():
-    llm = ChatGroq(model="llama-3.1-8b-instant")
+    chain = build_explain_and_summarize_chain()
 
-    response = llm.invoke("Hola, ¿estás funcionando con Llama 3.1 en Groq?")
-    print(response)
+    topic = "LangChain"
+    result = chain(
+        {"topic": topic}
+    )
+
+    print("=== Explanation ===")
+    print(result["explanation"])
+    print("\n=== Summary ===")
+    print(result["summary"])
+
 
 if __name__ == "__main__":
     main()

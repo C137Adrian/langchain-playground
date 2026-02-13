@@ -1,9 +1,5 @@
 # 🚀 LangChain Playground
 
-<p align="center">
-  <strong>Llama 3.1 + Groq</strong>
-</p>
-
 ---
 
 A minimal and well-structured foundation for building applications with **LangChain**, powered by **Llama 3.1** models served through **Groq**.
@@ -19,14 +15,14 @@ This repository provides a clean, modular, and extensible environment for buildi
 
 ## 📦 Installation
 
-### 1. Clone the repository
+### Clone the repository
 
 ```bash
 git clone https://github.com/yourusername/langchain-playground.git
 cd langchain-playground
 ```
 
-### 2. Install dependencies
+### Install dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -38,7 +34,7 @@ pip install -r requirements.txt
 
 The project uses environment variables to manage credentials.
 
-### 1. Create a `.env` file in the root directory
+### 1. Create a `.env` file in the project root
 
 ### 2. Add your Groq API key (see `.env.example`)
 
@@ -58,19 +54,43 @@ python src/main.py
 
 ---
 
+## 🧱 LangChain Compatibility Notes
+
+This project uses:
+
+- `langchain`
+- `langchain-core`
+- `langchain-classic` (for compatibility with the original Quickstart API)
+
+LangChain is currently transitioning to a new architecture.  
+To keep the Quickstart examples working as expected, this project uses:
+
+- `LLMChain`
+- `SequentialChain`  
+(from `langchain-classic`)
+
+This ensures:
+
+- Predictable behavior  
+- Stable examples  
+- Compatibility with the official Quickstart flow  
+
+A future branch will migrate the project to the new **Runnable API**.
+
+---
+
 ## 🗂️ Project Structure
 
 ```text
 src/
-│
 ├── agents/      # Agent definitions
 ├── chains/      # Chain implementations
 ├── utils/       # Utilities and helpers
 └── main.py      # Application entry point
 
-tests/           # Automated tests
-.env.example     # Environment variables template
-requirements.txt # Project dependencies
+tests/
+.env.example
+requirements.txt
 ```
 
 ---
