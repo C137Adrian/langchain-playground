@@ -1,12 +1,9 @@
-from chains.memory_chain import build_memory_chain
-
+from agents.math_agent import build_math_agent
 
 def main():
-    chain = build_memory_chain()
-
-    print(chain.run("Hi, my name is Adrian."))
-    print(chain.run("Can you remind me what my name is?"))
-
+    agent = build_math_agent()
+    result = agent("What is 12 + 30?")
+    print(result)
 
 if __name__ == "__main__":
     main()
