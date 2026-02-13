@@ -1,18 +1,11 @@
-from chains.explain_and_summarize import build_explain_and_summarize_chain
+from chains.memory_chain import build_memory_chain
 
 
 def main():
-    chain = build_explain_and_summarize_chain()
+    chain = build_memory_chain()
 
-    topic = "LangChain"
-    result = chain(
-        {"topic": topic}
-    )
-
-    print("=== Explanation ===")
-    print(result["explanation"])
-    print("\n=== Summary ===")
-    print(result["summary"])
+    print(chain.run("Hi, my name is Adrian."))
+    print(chain.run("Can you remind me what my name is?"))
 
 
 if __name__ == "__main__":
