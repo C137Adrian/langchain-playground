@@ -1,30 +1,35 @@
-# 🚀 LangChain Playground
-
-### Llama 3.1 + Groq
+# 🚀 LangChain Playground — Groq + Llama 3.1
 
 ---
 
-A minimal and well-structured foundation for building applications with **LangChain**, powered by **Llama 3.1** models served through **Groq**.
+A minimal and well-structured foundation for building applications with **LangChain** using **Llama 3.1** models served through **Groq**.
 
-This repository provides a clean, modular, and extensible environment for building:
+This repository provides a clean, modular environment for:
 
-- 🔗 **Chains**
-- 🤖 **Agents**
-- 🛠️ **Tools**
-- 🧪 **Rapid Prototypes**
+- 🔗 **Tool-driven agents**
+- 🤖 **Function-calling workflows**
+- 🛠️ **Custom tools**
+- ⚡ **Rapid prototyping**
 
 ---
 
 ## 📦 Installation
 
-### Clone the repository
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/yourusername/langchain-playground.git
 cd langchain-playground
 ```
 
-### Install dependencies
+### 2. Create a Conda environment
+
+```bash
+conda create -n langchain-pro python=3.11 -y
+conda activate langchain-pro
+```
+
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -34,77 +39,108 @@ pip install -r requirements.txt
 
 ## ⚙️ Configuration
 
-The project uses environment variables to manage credentials.
+The project uses environment variables for credentials.
 
-### 1. Create a `.env` file in the root directory
+### 1. Copy the example file
 
-### 2. Add your Groq API key (see `.env.example`)
+```bash
+cp .env.example .env
+```
+
+### 2. Add your Groq API key
 
 ```env
-GROQ_API_KEY=your_api_key
+GROQ_API_KEY=your_api_key_here
 ```
 
 ---
 
 ## ▶️ Usage
 
-Run the application:
+Run the terminal chat agent:
 
 ```bash
 python src/main.py
 ```
 
+**Example session:**
+
+```
+Agente listo. Escribe 'exit' para salir.
+
+Tú: 5+5
+Agente: 10
+```
+
 ---
 
-## 🧱 LangChain Compatibility Notes
+## 🧠 Architecture Notes
 
-This project uses:
+This project follows the **modern LangChain architecture**, using:
 
-- `langchain`
-- `langchain-core`
-- `langchain-classic` (for compatibility with the original Quickstart API)
-- `langchain-groq`
+- `@tool` for defining tools  
+- `llm.bind_tools()` for function calling  
+- `ChatGroq` for Llama 3.1 models  
+- A minimal custom agent loop  
 
-LangChain is currently transitioning to a new architecture based on **Runnables**.  
-To keep Quickstart examples stable and predictable, this project uses:
+Not used:
 
-- `LLMChain`
-- `SequentialChain`
-- `ConversationChain`
-- `ConversationBufferMemory`
+- Legacy agents (`initialize_agent`)  
+- Legacy chains (`LLMChain`, `AgentExecutor`)  
+- Deprecated LangChain APIs  
 
-These come from `langchain-classic`, which preserves the original LangChain API.  
-A future branch will migrate the project to the modern Runnable-based architecture.
+**Goal:** clarity, stability, and forward compatibility.
 
 ---
 
 ## 🗂️ Project Structure
 
-```
+```text
 src/
 │
-├── agents/      # Agent definitions
-├── chains/      # Chain implementations (basic, sequential, memory…)
-├── utils/       # Utilities and helpers
-└── main.py      # Application entry point
+├── agents/
+│   └── multi_tool_agent.py     # Tool-calling agent
+│
+├── tools/
+│   ├── math_tools.py           # Basic math operations
+│   ├── text_tools.py           # Text utilities
+│   └── time_tools.py           # Current time tool
+│
+├── llm/
+│   └── groq.py                 # Groq model configuration
+│
+└── main.py                     # Terminal chat entry point
 
-.env.example     # Environment variables template
-requirements.txt # Project dependencies
-LICENSE          # Project license
-README.md        # Project documentation
+.env.example
+requirements.txt
+README.md
 ```
 
 ---
 
-## 🎯 Project Goals
+## 🛠️ Extending the Project
 
-- Provide a solid foundation for rapid experimentation  
-- Enable seamless extension into agents, tools, and complex workflows  
-- Maintain a clean, modular, and scalable architecture  
-- Serve as a reusable template for future LLM-based projects  
+To add a new tool:
+
+1. Create a file in `src/tools/`  
+2. Decorate the function with `@tool`  
+3. Add it to the tool list in `multi_tool_agent.py`  
+
+**Example:**
+
+```python
+from langchain.tools import tool
+
+@tool
+def double(x: int) -> int:
+    """Returns x * 2."""
+    return x * 2
+```
 
 ---
 
-## 📜 License
+## 🎯 Purpose
 
-This project is licensed under the **MIT License**.
+- Provide a clean starting point for LangChain + Groq projects  
+- Enable quick experimentation with tools and agents  
+- Maintain a simple, readable, and scalable structure
