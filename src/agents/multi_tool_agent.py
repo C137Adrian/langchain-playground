@@ -4,6 +4,7 @@ from src.tools.math_tools import (
 )
 from src.tools.text_tools import reverse_text, count_words
 from src.tools.time_tools import get_current_time
+from src.agents.rag_tool import rag_tool
 from llm.groq import get_llm
 
 def build_multi_tool_agent():
@@ -18,7 +19,8 @@ def build_multi_tool_agent():
         divide_numbers,
         reverse_text,
         count_words,
-        get_current_time
+        get_current_time,
+        rag_tool
     ]
 
     # Bind tools to the model (function calling)
@@ -26,8 +28,13 @@ def build_multi_tool_agent():
 
     # System instruction
     system_prompt = SystemMessage(content="""
-You are an AI assistant that uses tools through JSON function calling.
-When you decide to call a tool, respond only with a JSON object containing
+You are an AI assistant that can only use the tools explicitly provided to you.
+If a tool is not listed in the current toolset, you MUST NOT attempt to call it.
+
+If the user asks a general knowledge question, answer directly without calling any tool.
+Use the RAG tool only when the question requires retrieving context from the vectorstore.
+
+When you decide to call a tool, respond ONLY with a JSON object containing
 the tool name and its arguments.
 """)
 
@@ -56,3 +63,6 @@ the tool name and its arguments.
         return response.content
 
     return agent
+
+# GLOBAL AGENT INSTANCE
+agent = build_multi_tool_agent()
