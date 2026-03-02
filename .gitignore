@@ -5,6 +5,11 @@
 __pycache__/
 *.pyc
 
+# Vectorstore (FAISS)
+data/
+*.faiss
+*.pkl
+
 # System files
 .DS_Store
 Thumbs.db

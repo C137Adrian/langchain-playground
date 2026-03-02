@@ -1,7 +1,7 @@
 from src.vectorstore.faiss_store import create_faiss_store, save_faiss_store
 
 def build_index():
-    # Example documents (later we replace this with real files)
+    # Example documents
     docs = [
         "LangChain uses tools and function calling.",
         "Groq provides extremely fast inference for Llama models.",

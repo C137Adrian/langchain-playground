@@ -1,4 +1,4 @@
-from agents.multi_tool_agent import build_multi_tool_agent
+from src.agents.multi_tool_agent import build_multi_tool_agent
 
 def main():
     agent = build_multi_tool_agent()

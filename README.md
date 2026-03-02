@@ -2,14 +2,15 @@
 
 ---
 
-A minimal and well-structured foundation for building applications with **LangChain** using **Llama 3.1** models served through **Groq**.
+A clean and modular foundation for building applications with **LangChain**, powered by **Llama 3.1** models served through **Groq**.
 
-This repository provides a clean, modular environment for:
+The project is designed for clarity, extensibility, and ease of experimentation, offering a modern implementation of:
 
-- 🔗 **Tool-driven agents**
-- 🤖 **Function-calling workflows**
-- 🛠️ **Custom tools**
-- ⚡ **Rapid prototyping**
+- 🔗 Tool-driven agents  
+- 🤖 Function-calling workflows  
+- 📚 A complete RAG pipeline  
+- 🛠️ Custom tools  
+- ✅ A well-tested and production-ready architecture  
 
 ---
 
@@ -63,33 +64,42 @@ Run the terminal chat agent:
 python src/main.py
 ```
 
-**Example session:**
+### Example session
 
 ```
-Agente listo. Escribe 'exit' para salir.
+Agent ready. Type 'exit' to quit.
 
-Tú: 5+5
-Agente: 10
+You: 5+5
+Agent: 10
 ```
+
+The agent automatically decides whether to:
+
+- Answer directly  
+- Call one of the registered tools  
+- Use the RAG pipeline to retrieve contextual information  
 
 ---
 
-## 🧠 Architecture Notes
+## 🧠 Architecture Overview
 
-This project follows the **modern LangChain architecture**, using:
+The project follows the modern **LangChain** architecture, emphasizing clarity and forward compatibility.
 
-- `@tool` for defining tools  
-- `llm.bind_tools()` for function calling  
-- `ChatGroq` for Llama 3.1 models  
-- A minimal custom agent loop  
+### Key Components
 
-Not used:
+- `@tool` decorators for defining tools  
+- `llm.bind_tools()` for structured function calling  
+- A custom multi-tool agent  
+- A complete RAG pipeline (FAISS + embeddings + retriever)  
+- A lightweight agent loop without legacy abstractions  
 
-- Legacy agents (`initialize_agent`)  
-- Legacy chains (`LLMChain`, `AgentExecutor`)  
-- Deprecated LangChain APIs  
+### Not Used
 
-**Goal:** clarity, stability, and forward compatibility.
+- Deprecated agents (`initialize_agent`)  
+- Deprecated chains (`LLMChain`, `AgentExecutor`)  
+- Legacy LangChain APIs  
+
+The goal is to provide a stable, maintainable foundation suitable for real applications.
 
 ---
 
@@ -99,21 +109,55 @@ Not used:
 src/
 │
 ├── agents/
-│   └── multi_tool_agent.py     # Tool-calling agent
+│   └── multi_tool_agent.py     # Main multi-tool agent
 │
 ├── tools/
-│   ├── math_tools.py           # Basic math operations
+│   ├── math_tools.py           # Arithmetic tools
 │   ├── text_tools.py           # Text utilities
-│   └── time_tools.py           # Current time tool
+│   ├── time_tools.py           # Time utility
+│   └── rag_tool.py             # RAG tool wrapper
+│
+├── rag/
+│   ├── rag_search.py           # RAG retrieval pipeline
+│   ├── retriever.py            # FAISS retriever logic
+│   ├── vectorstore.py          # Vectorstore initialization
+│   └── embeddings.py           # Embedding model configuration
 │
 ├── llm/
-│   └── groq.py                 # Groq model configuration
+│   └── groq.py                 # Groq LLM configuration
 │
 └── main.py                     # Terminal chat entry point
 
+tests/
+│   ├── unit/                   # Unit tests for tools and agent
+│   └── integration/            # Integration tests (RAG + agent)
+
 .env.example
 requirements.txt
+pytest.ini
 README.md
+```
+
+---
+
+## 🧪 Testing
+
+The project includes a full test suite covering:
+
+- Unit tests for all tools  
+- Unit test for agent initialization  
+- Integration test for the RAG pipeline and tool-calling behavior  
+
+Run all tests:
+
+```bash
+pytest -q
+```
+
+A successful run should show:
+
+```
+10 passed, X warnings
 ```
 
 ---
@@ -122,11 +166,13 @@ README.md
 
 To add a new tool:
 
-1. Create a file in `src/tools/`  
-2. Decorate the function with `@tool`  
-3. Add it to the tool list in `multi_tool_agent.py`  
+1. Create a function in `src/tools/`  
+2. Decorate it with `@tool`  
+3. Import it in `multi_tool_agent.py`  
+4. Add it to the tools list  
+5. Write a unit test in `tests/unit/`  
 
-**Example:**
+### Example
 
 ```python
 from langchain.tools import tool
@@ -139,8 +185,31 @@ def double(x: int) -> int:
 
 ---
 
+## 📚 RAG Pipeline
+
+The RAG subsystem is fully modular:
+
+- **Embeddings:** Sentence Transformers  
+- **Vectorstore:** FAISS  
+- **Retriever:** Top-k similarity search  
+- **Tool:** `rag_tool` wraps the retrieval pipeline for the agent  
+
+To rebuild the vectorstore:
+
+```python
+from src.rag.vectorstore import build_vectorstore
+build_vectorstore()
+```
+
+---
+
 ## 🎯 Purpose
 
-- Provide a clean starting point for LangChain + Groq projects  
-- Enable quick experimentation with tools and agents  
-- Maintain a simple, readable, and scalable structure
+This repository provides a clear, maintainable starting point for:
+
+- Building LangChain applications with Groq  
+- Experimenting with tool-calling agents  
+- Developing RAG-enhanced assistants  
+- Creating production-ready AI services  
+
+It is intentionally minimal, but structured to scale as your project grows.

@@ -4,7 +4,7 @@ from src.tools.math_tools import (
 )
 from src.tools.text_tools import reverse_text, count_words
 from src.tools.time_tools import get_current_time
-from src.agents.rag_tool import rag_tool
+from src.tools.rag_tool import rag_tool
 from src.llm.groq import get_llm
 
 def build_multi_tool_agent():
@@ -60,7 +60,9 @@ You must follow these rules:
             # Find and execute the tool
             for tool in tools:
                 if tool.name == name:
-                    return tool.invoke(args)
+                    context = tool.invoke(args)
+                    return f"According to the retrieved context:\n\n{context}"
+
 
         # Otherwise return normal text
         return response.content
