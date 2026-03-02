@@ -5,7 +5,7 @@ from src.tools.math_tools import (
 from src.tools.text_tools import reverse_text, count_words
 from src.tools.time_tools import get_current_time
 from src.agents.rag_tool import rag_tool
-from llm.groq import get_llm
+from src.llm.groq import get_llm
 
 def build_multi_tool_agent():
 
@@ -28,14 +28,17 @@ def build_multi_tool_agent():
 
     # System instruction
     system_prompt = SystemMessage(content="""
-You are an AI assistant that can only use the tools explicitly provided to you.
-If a tool is not listed in the current toolset, you MUST NOT attempt to call it.
+You are an AI assistant with access to a limited set of tools.
+You must follow these rules:
 
-If the user asks a general knowledge question, answer directly without calling any tool.
-Use the RAG tool only when the question requires retrieving context from the vectorstore.
-
-When you decide to call a tool, respond ONLY with a JSON object containing
-the tool name and its arguments.
+1. You can ONLY use the tools explicitly provided to you.
+2. If a tool is not listed, you MUST NOT attempt to call it.
+3. Use the RAG tool only when the user asks about information that may exist
+   inside the vectorstore (documents, notes, stored knowledge).
+4. If the question is general knowledge or can be answered directly,
+   respond normally without calling any tool.
+5. When you decide to call a tool, respond ONLY with a JSON object containing
+   the tool name and its arguments.
 """)
 
     def agent(user_input: str):
